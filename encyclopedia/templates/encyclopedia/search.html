@@ -1,0 +1,12 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block title %}
+    Search
+{% endblock %}
+
+{% block body %}
+	Similar Pages..
+	<ul>
+      <a href="/{{result}}"><li>{{result}}</li></a>
+    </ul>
+{% endblock %}
