@@ -45,7 +45,7 @@ def search(request):
 
 
 def create(request):
-    return render(request, "encyclopedia/create.html"{
+    return render(request, "encyclopedia/create.html",{
         "entries": util.list_entries()
         })
 
