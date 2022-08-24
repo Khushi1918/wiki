@@ -4,6 +4,7 @@ from markdown2 import Markdown
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+import random
 
 def index(request):
     return render(request, "encyclopedia/index.html", {
@@ -45,9 +46,43 @@ def search(request):
 
 
 def create(request):
-    return render(request, "encyclopedia/create.html",{
-        "entries": util.list_entries()
-        })
+   
+    if request.method== "POST":
+        newTitle = request.POST.get("addTitle")
+        newContent = request.POST.get("addContent")
+        entries= util.list_entries()
+
+        if newTitle in entries:
+            return HttpResponse("This title already exists.")
+        else:
+            util.save_entry(newTitle,newContent)
+            return HttpResponseRedirect(reverse("title", kwargs={"title":newTitle}))
+
+    return render(request, "encyclopedia/create.html")
 
 
+
+def edit(request,title):
+    
+    if request.method=="POST":
+        newContent=request.POST.get("editedContent")
+        util.save_entry(title,newContent)
+        return HttpResponseRedirect(reverse("title",kwargs={'title': title}))
+        sys.exit()
+
+    content=util.get_entry(title)
+    return render(request,"encyclopedia/edit.html",{
+    "content":content
+    })
+
+def random(request):
+    pass
+#     title= util.list_entries()
+#     # Length= len(title)
+#     # temp= random.randint(0,4)
+#     # page=title[temp]
+#     # return HttpResponseRedirect(reverse("title", kwargs={"title":page}))
+
+#     temp=title[0]
+#     return HttpResponseRedirect(reverse("title", kwargs={"title":temp}))
 
